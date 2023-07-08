@@ -49,11 +49,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
-import com.example.inventory.data.Item
+import com.example.inventory.AcronymTopAppBar
+import com.example.inventory.data.Acronym
 import com.example.inventory.ui.AppViewModelProvider
-import com.example.inventory.ui.item.formatedPrice
+import com.example.threeletteracroymsv4.ui.home.HomeViewModel
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 
@@ -63,13 +63,13 @@ object HomeDestination : NavigationDestination {
 }
 
 /**
- * Entry route for Home screen
+ * Entry route for Home screen.
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    navigateToItemEntry: () -> Unit,
-    navigateToItemUpdate: (Int) -> Unit,
+    navigateToAcronymEntry: () -> Unit,
+    navigateToAcronymUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -79,7 +79,7 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            InventoryTopAppBar(
+            AcronymTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior
@@ -87,20 +87,20 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateToItemEntry,
+                onClick = navigateToAcronymEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.item_entry_title)
+                    contentDescription = stringResource(R.string.acronym_entry_title)
                 )
             }
         },
     ) { innerPadding ->
         HomeBody(
             itemList = homeUiState.itemList,
-            onItemClick = navigateToItemUpdate,
+            onItemClick = navigateToAcronymUpdate,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -110,7 +110,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeBody(
-    itemList: List<Item>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Acronym>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -134,11 +134,11 @@ private fun HomeBody(
 
 @Composable
 private fun InventoryList(
-    itemList: List<Item>, onItemClick: (Item) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Acronym>, onItemClick: (Acronym) -> Unit, modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemList, key = { it.id }) { item ->
-            InventoryItem(item = item,
+            InventoryItem(acronym = item,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(item) })
@@ -148,7 +148,7 @@ private fun InventoryList(
 
 @Composable
 private fun InventoryItem(
-    item: Item, modifier: Modifier = Modifier
+    acronym: Acronym, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -161,17 +161,17 @@ private fun InventoryItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = item.name,
+                    text = acronym.acronym,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = item.formatedPrice(),
+                    text = acronym.comment,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             Text(
-                text = stringResource(R.string.in_stock, item.quantity),
+                text = stringResource(R.string.acronym, acronym.dataCreated),
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -183,7 +183,9 @@ private fun InventoryItem(
 fun HomeBodyPreview() {
     InventoryTheme {
         HomeBody(listOf(
-            Item(1, "Game", 100.0, 20), Item(2, "Pen", 200.0, 30), Item(3, "TV", 300.0, 50)
+            Acronym(1, "ABC", "The alphabet.", 100, 200),
+            Acronym(2, "BBC", "British broadcasting company, watch some TV!!!", 500, 600),
+            Acronym(3, "JCB", "Diggers", 300, 400)
         ), onItemClick = {})
     }
 }
@@ -201,7 +203,7 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     InventoryTheme {
         InventoryItem(
-            Item(1, "Game", 100.0, 20),
+            Acronym(1, "ABC", "The alphabet.", 100, 200),
         )
     }
 }

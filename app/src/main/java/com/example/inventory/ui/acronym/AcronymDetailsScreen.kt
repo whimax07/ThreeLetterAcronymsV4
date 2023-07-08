@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.inventory.ui.item
+package com.example.inventory.ui.acronym
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -51,39 +50,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
-import com.example.inventory.data.Item
+import com.example.inventory.AcronymTopAppBar
+import com.example.inventory.data.Acronym
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
 
-object ItemDetailsDestination : NavigationDestination {
-    override val route = "item_details"
-    override val titleRes = R.string.item_detail_title
-    const val itemIdArg = "itemId"
-    val routeWithArgs = "$route/{$itemIdArg}"
+object AcronymDetailsDestination : NavigationDestination {
+    override val route = "acronym_details"
+    override val titleRes = R.string.acronym_detail_title
+    const val acronymIdArg = "acronymId"
+    val routeWithArgs = "$route/{$acronymIdArg}"
 }
 
 @Composable
-fun ItemDetailsScreen(
+fun AcronymDetailsScreen(
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ItemDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: AcronymDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     Scaffold(topBar = {
-        InventoryTopAppBar(
-            title = stringResource(ItemDetailsDestination.titleRes),
+        AcronymTopAppBar(
+            title = stringResource(AcronymDetailsDestination.titleRes),
             canNavigateBack = true,
             navigateUp = navigateBack
         )
     }, floatingActionButton = {
         FloatingActionButton(
-            onClick = { navigateToEditItem(uiState.value.itemDetails.id) },
+            onClick = { navigateToEditItem(uiState.value.acronymDetails.id) },
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
@@ -95,9 +94,8 @@ fun ItemDetailsScreen(
         }
     }, modifier = modifier
     ) { innerPadding ->
-        ItemDetailsBody(
-            itemDetailsUiState = uiState.value,
-            onSellItem = { viewModel.reduceQuantityByOne() },
+        AcronymDetailsBody(
+            acronymDetailsUiState = uiState.value,
             onDelete = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be deleted from the Database. This is because when config
@@ -111,14 +109,13 @@ fun ItemDetailsScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-            )
+        )
     }
 }
 
 @Composable
-private fun ItemDetailsBody(
-    itemDetailsUiState: ItemDetailsUiState,
-    onSellItem: () -> Unit,
+private fun AcronymDetailsBody(
+    acronymDetailsUiState: AcronymDetailsUiState,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -127,17 +124,9 @@ private fun ItemDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-        ItemDetails(
-            item = itemDetailsUiState.itemDetails.toItem(), modifier = Modifier.fillMaxWidth()
+        AcronymDetails(
+            acronym = acronymDetailsUiState.acronymDetails.toItem(), modifier = Modifier.fillMaxWidth()
         )
-        Button(
-            onClick = onSellItem,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.small,
-            enabled = !itemDetailsUiState.outOfStock
-        ) {
-            Text(stringResource(R.string.sell))
-        }
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -159,8 +148,8 @@ private fun ItemDetailsBody(
 
 
 @Composable
-fun ItemDetails(
-    item: Item, modifier: Modifier = Modifier
+fun AcronymDetails(
+    acronym: Acronym, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -175,20 +164,20 @@ fun ItemDetails(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             ItemDetailsRow(
-                labelResID = R.string.item,
-                itemDetail = item.name,
+                labelResID = R.string.acronym,
+                itemDetail = acronym.acronym,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen
                     .padding_medium))
             )
             ItemDetailsRow(
-                labelResID = R.string.quantity_in_stock,
-                itemDetail = item.quantity.toString(),
+                labelResID = R.string.comment,
+                itemDetail = acronym.comment,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen
                     .padding_medium))
             )
             ItemDetailsRow(
-                labelResID = R.string.price,
-                itemDetail = item.formatedPrice(),
+                labelResID = R.string.time_created,
+                itemDetail = acronym.toDateString(),
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen
                     .padding_medium))
             )
@@ -230,10 +219,11 @@ private fun DeleteConfirmationDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun ItemDetailsScreenPreview() {
+fun AcronymDetailsScreenPreview() {
     InventoryTheme {
-        ItemDetailsBody(ItemDetailsUiState(
-            outOfStock = true, itemDetails = ItemDetails(1, "Pen", "$100", "10")
-        ), onSellItem = {}, onDelete = {})
+        AcronymDetailsBody(
+            AcronymDetailsUiState(
+            acronymDetails = AcronymDetails(1, "Pen", "$100", 1000, 2000)
+        ), onDelete = {})
     }
 }

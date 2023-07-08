@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.inventory.ui.item
+package com.example.inventory.ui.acronym
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.inventory.data.ItemsRepository
+import com.example.inventory.data.AcronymRepository
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -30,25 +30,25 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel to retrieve and update an item from the [ItemsRepository]'s data source.
  */
-class ItemEditViewModel(
+class AcronymEditViewModel(
     savedStateHandle: SavedStateHandle,
-    private val itemsRepository: ItemsRepository
+    private val acronymRepository: AcronymRepository
 ) : ViewModel() {
 
     /**
      * Holds current item ui state
      */
-    var itemUiState by mutableStateOf(ItemUiState())
+    var acronymUiState by mutableStateOf(AcronymUiState())
         private set
 
-    private val itemId: Int = checkNotNull(savedStateHandle[ItemEditDestination.itemIdArg])
+    private val itemId: Int = checkNotNull(savedStateHandle[AcronymEditDestination.acronymIdArg])
 
     init {
         viewModelScope.launch {
-            itemUiState = itemsRepository.getItemStream(itemId)
+            acronymUiState = acronymRepository.getItemStream(itemId)
                 .filterNotNull()
                 .first()
-                .toItemUiState(true)
+                .toAcronymUiState(true)
         }
     }
 
@@ -56,23 +56,23 @@ class ItemEditViewModel(
      * Update the item in the [ItemsRepository]'s data source
      */
     suspend fun updateItem() {
-        if (validateInput(itemUiState.itemDetails)) {
-            itemsRepository.updateItem(itemUiState.itemDetails.toItem())
+        if (validateInput(acronymUiState.acronymDetails)) {
+            acronymRepository.updateItem(acronymUiState.acronymDetails.toItem())
         }
     }
 
     /**
-     * Updates the [itemUiState] with the value provided in the argument. This method also triggers
+     * Updates the [acronymUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
-    fun updateUiState(itemDetails: ItemDetails) {
-        itemUiState =
-            ItemUiState(itemDetails = itemDetails, isEntryValid = validateInput(itemDetails))
+    fun updateUiState(acronymDetails: AcronymDetails) {
+        acronymUiState =
+            AcronymUiState(acronymDetails = acronymDetails, isEntryValid = validateInput(acronymDetails))
     }
 
-    private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
+    private fun validateInput(uiState: AcronymDetails = acronymUiState.acronymDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+            ack.isNotBlank() && ack.length == 3
         }
     }
 }

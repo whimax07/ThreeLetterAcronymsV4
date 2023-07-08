@@ -35,4 +35,11 @@
     <string name="sell">Sell</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
+    <string name="acronym_detail_title">Acronym App</string>
+    <string name="acronym_name_req">Acrontm</string>
+    <string name="acronym_entry_title">Acronym</string>
+    <string name="time_created">Creation Time</string>
+    <string name="comment">Comment</string>
+    <string name="acronym">Acronym</string>
+    <string name="acronym_comment_req">Acronym Comment</string>
 </resources>

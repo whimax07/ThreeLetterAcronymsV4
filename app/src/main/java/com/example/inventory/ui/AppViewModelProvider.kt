@@ -22,40 +22,40 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.inventory.InventoryApplication
-import com.example.inventory.ui.home.HomeViewModel
-import com.example.inventory.ui.item.ItemDetailsViewModel
-import com.example.inventory.ui.item.ItemEditViewModel
-import com.example.inventory.ui.item.ItemEntryViewModel
+import com.example.threeletteracroymsv4.ui.home.HomeViewModel
+import com.example.inventory.AcronymApplication
+import com.example.inventory.ui.acronym.AcronymDetailsViewModel
+import com.example.inventory.ui.acronym.AcronymEditViewModel
+import com.example.inventory.ui.acronym.AcronymEntryViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire Inventory app
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-        // Initializer for ItemEditViewModel
+        // Initializer for AcronymEditViewModel
         initializer {
-            ItemEditViewModel(
+            AcronymEditViewModel(
                 this.createSavedStateHandle(),
-                inventoryApplication().container.itemsRepository
+                acronymApplication().container.acronymRepository
             )
         }
-        // Initializer for ItemEntryViewModel
+        // Initializer for AcronymEntryViewModel
         initializer {
-            ItemEntryViewModel(inventoryApplication().container.itemsRepository)
+            AcronymEntryViewModel(acronymApplication().container.acronymRepository)
         }
 
-        // Initializer for ItemDetailsViewModel
+        // Initializer for AcronymDetailsViewModel
         initializer {
-            ItemDetailsViewModel(
+            AcronymDetailsViewModel(
                 this.createSavedStateHandle(),
-                inventoryApplication().container.itemsRepository
+                acronymApplication().container.acronymRepository
             )
         }
 
         // Initializer for HomeViewModel
         initializer {
-            HomeViewModel(inventoryApplication().container.itemsRepository)
+            HomeViewModel(acronymApplication().container.acronymRepository)
         }
     }
 }
@@ -64,5 +64,5 @@ object AppViewModelProvider {
  * Extension function to queries for [Application] object and returns an instance of
  * [InventoryApplication].
  */
-fun CreationExtras.inventoryApplication(): InventoryApplication =
-    (this[AndroidViewModelFactory.APPLICATION_KEY] as InventoryApplication)
+fun CreationExtras.acronymApplication(): AcronymApplication =
+    (this[AndroidViewModelFactory.APPLICATION_KEY] as AcronymApplication)

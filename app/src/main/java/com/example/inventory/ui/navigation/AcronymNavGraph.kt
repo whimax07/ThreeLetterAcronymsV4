@@ -25,18 +25,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
-import com.example.inventory.ui.item.ItemDetailsDestination
-import com.example.inventory.ui.item.ItemDetailsScreen
-import com.example.inventory.ui.item.ItemEditDestination
-import com.example.inventory.ui.item.ItemEditScreen
-import com.example.inventory.ui.item.ItemEntryDestination
-import com.example.inventory.ui.item.ItemEntryScreen
+import com.example.inventory.ui.acronym.AcronymDetailsDestination
+import com.example.inventory.ui.acronym.AcronymDetailsScreen
+import com.example.inventory.ui.acronym.AcronymEntryDestination
+import com.example.inventory.ui.acronym.AcronymEntryScreen
+import com.example.inventory.ui.acronym.AcronymEditDestination
+import com.example.inventory.ui.acronym.AcronymEditScreen
 
 /**
  * Provides Navigation graph for the application.
  */
 @Composable
-fun InventoryNavHost(
+fun AcronymNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
@@ -47,36 +47,36 @@ fun InventoryNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
-                navigateToItemUpdate = {
-                    navController.navigate("${ItemDetailsDestination.route}/${it}")
+                navigateToAcronymEntry = { navController.navigate(AcronymEntryDestination.route) },
+                navigateToAcronymUpdate = {
+                    navController.navigate("${AcronymDetailsDestination.route}/${it}")
                 }
             )
         }
-        composable(route = ItemEntryDestination.route) {
-            ItemEntryScreen(
+        composable(route = AcronymEntryDestination.route) {
+            AcronymEntryScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
         }
         composable(
-            route = ItemDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
+            route = AcronymDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(AcronymDetailsDestination.acronymIdArg) {
                 type = NavType.IntType
             })
         ) {
-            ItemDetailsScreen(
-                navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
+            AcronymDetailsScreen(
+                navigateToEditItem = { navController.navigate("${AcronymEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
             )
         }
         composable(
-            route = ItemEditDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
+            route = AcronymEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(AcronymEditDestination.acronymIdArg) {
                 type = NavType.IntType
             })
         ) {
-            ItemEditScreen(
+            AcronymEditScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )

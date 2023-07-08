@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.inventory.ui.item
+package com.example.inventory.ui.acronym
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,40 +37,38 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
+import com.example.inventory.AcronymTopAppBar
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
-import java.util.Currency
-import java.util.Locale
 
-object ItemEntryDestination : NavigationDestination {
-    override val route = "item_entry"
-    override val titleRes = R.string.item_entry_title
+object AcronymEntryDestination : NavigationDestination {
+    override val route = "acronym_entry"
+    override val titleRes = R.string.acronym_entry_title
 }
 
 @Composable
-fun ItemEntryScreen(
+fun AcronymEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
-    viewModel: ItemEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: AcronymEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
-                title = stringResource(ItemEntryDestination.titleRes),
+            AcronymTopAppBar(
+                title = stringResource(AcronymEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp
             )
         }
     ) { innerPadding ->
-        ItemEntryBody(
-            itemUiState = viewModel.itemUiState,
-            onItemValueChange = viewModel::updateUiState,
+        AcronymEntryBody(
+            acronymUiState = viewModel.acronymUiState,
+            onAcronymValueChange = viewModel::updateUiState,
             onSaveClick = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be saved in the Database. This is because when config
@@ -90,9 +88,9 @@ fun ItemEntryScreen(
 }
 
 @Composable
-fun ItemEntryBody(
-    itemUiState: ItemUiState,
-    onItemValueChange: (ItemDetails) -> Unit,
+fun AcronymEntryBody(
+    acronymUiState: AcronymUiState,
+    onAcronymValueChange: (AcronymDetails) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -101,13 +99,13 @@ fun ItemEntryBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
     ) {
         ItemInputForm(
-            itemDetails = itemUiState.itemDetails,
-            onValueChange = onItemValueChange,
+            acronymDetails = acronymUiState.acronymDetails,
+            onValueChange = onAcronymValueChange,
             modifier = Modifier.fillMaxWidth()
         )
         Button(
             onClick = onSaveClick,
-            enabled = itemUiState.isEntryValid,
+            enabled = acronymUiState.isEntryValid,
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -118,9 +116,9 @@ fun ItemEntryBody(
 
 @Composable
 fun ItemInputForm(
-    itemDetails: ItemDetails,
+    acronymDetails: AcronymDetails,
     modifier: Modifier = Modifier,
-    onValueChange: (ItemDetails) -> Unit = {},
+    onValueChange: (AcronymDetails) -> Unit = {},
     enabled: Boolean = true
 ) {
     Column(
@@ -128,9 +126,9 @@ fun ItemInputForm(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         OutlinedTextField(
-            value = itemDetails.name,
-            onValueChange = { onValueChange(itemDetails.copy(name = it)) },
-            label = { Text(stringResource(R.string.item_name_req)) },
+            value = acronymDetails.ack,
+            onValueChange = { onValueChange(acronymDetails.copy(ack = it)) },
+            label = { Text(stringResource(R.string.acronym_name_req)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             ),
@@ -139,30 +137,15 @@ fun ItemInputForm(
             singleLine = true
         )
         OutlinedTextField(
-            value = itemDetails.price,
-            onValueChange = { onValueChange(itemDetails.copy(price = it)) },
+            value = acronymDetails.comment,
+            onValueChange = { onValueChange(acronymDetails.copy(comment = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            label = { Text(stringResource(R.string.item_price_req)) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
-            ),
-            leadingIcon = { Text(Currency.getInstance(Locale.getDefault()).symbol) },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = itemDetails.quantity,
-            onValueChange = { onValueChange(itemDetails.copy(quantity = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(stringResource(R.string.quantity_req)) },
+            label = { Text(stringResource(R.string.acronym_comment_req)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             ),
             modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
+            )
         if (enabled) {
             Text(
                 text = stringResource(R.string.required_fields),
@@ -176,10 +159,10 @@ fun ItemInputForm(
 @Composable
 private fun ItemEntryScreenPreview() {
     InventoryTheme {
-        ItemEntryBody(itemUiState = ItemUiState(
-            ItemDetails(
-                name = "Item name", price = "10.00", quantity = "5"
+        AcronymEntryBody(acronymUiState = AcronymUiState(
+            AcronymDetails(
+                ack = "XYZ", comment = "Ect ect"
             )
-        ), onItemValueChange = {}, onSaveClick = {})
+        ), onAcronymValueChange = {}, onSaveClick = {})
     }
 }

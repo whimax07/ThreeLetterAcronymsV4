@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.inventory.ui.item
+package com.example.inventory.ui.acronym
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -24,41 +24,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
+import com.example.inventory.AcronymTopAppBar
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
 
-object ItemEditDestination : NavigationDestination {
-    override val route = "item_edit"
+object AcronymEditDestination : NavigationDestination {
+    override val route = "acronym_edit"
     override val titleRes = R.string.edit_item_title
-    const val itemIdArg = "itemId"
-    val routeWithArgs = "$route/{$itemIdArg}"
+    const val acronymIdArg = "acronymId"
+    val routeWithArgs = "$route/{$acronymIdArg}"
 }
 
 @Composable
-fun ItemEditScreen(
+fun AcronymEditScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ItemEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: AcronymEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
-                title = stringResource(ItemEditDestination.titleRes),
+            AcronymTopAppBar(
+                title = stringResource(AcronymEditDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp
             )
         },
         modifier = modifier
     ) { innerPadding ->
-        ItemEntryBody(
-            itemUiState = viewModel.itemUiState,
-            onItemValueChange = viewModel::updateUiState,
+        AcronymEntryBody(
+            acronymUiState = viewModel.acronymUiState,
+            onAcronymValueChange = viewModel::updateUiState,
             onSaveClick = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be updated in the Database. This is because when config
@@ -78,6 +78,6 @@ fun ItemEditScreen(
 @Composable
 fun ItemEditScreenPreview() {
     InventoryTheme {
-        ItemEditScreen(navigateBack = { /*Do nothing*/ }, onNavigateUp = { /*Do nothing*/ })
+        AcronymEditScreen(navigateBack = { /*Do nothing*/ }, onNavigateUp = { /*Do nothing*/ })
     }
 }

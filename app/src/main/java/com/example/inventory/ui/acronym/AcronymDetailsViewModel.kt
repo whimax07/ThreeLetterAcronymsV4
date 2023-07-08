@@ -14,61 +14,48 @@
  * limitations under the License.
  */
 
-package com.example.inventory.ui.item
+package com.example.inventory.ui.acronym
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.inventory.data.ItemsRepository
+import com.example.inventory.data.AcronymRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 /**
  * ViewModel to retrieve, update and delete an item from the [ItemsRepository]'s data source.
  */
-class ItemDetailsViewModel(
+class AcronymDetailsViewModel(
     savedStateHandle: SavedStateHandle,
-    private val itemsRepository: ItemsRepository,
+    private val acronymsRepository: AcronymRepository,
 ) : ViewModel() {
 
-    private val itemId: Int = checkNotNull(savedStateHandle[ItemDetailsDestination.itemIdArg])
+    private val itemId: Int = checkNotNull(savedStateHandle[AcronymDetailsDestination.acronymIdArg])
 
     /**
-     * Holds the item details ui state. The data is retrieved from [ItemsRepository] and mapped to
+     * Holds the acronym details ui state. The data is retrieved from [AcronymRepository] and mapped to
      * the UI state.
      */
-    val uiState: StateFlow<ItemDetailsUiState> =
-        itemsRepository.getItemStream(itemId)
+    val uiState: StateFlow<AcronymDetailsUiState> =
+        acronymsRepository.getItemStream(itemId)
             .filterNotNull()
             .map {
-                ItemDetailsUiState(outOfStock = it.quantity <= 0, itemDetails = it.toItemDetails())
+                AcronymDetailsUiState(acronymDetails = it.toAcronymDetails())
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-                initialValue = ItemDetailsUiState()
+                initialValue = AcronymDetailsUiState()
             )
-
-    /**
-     * Reduces the item quantity by one and update the [ItemsRepository]'s data source.
-     */
-    fun reduceQuantityByOne() {
-        viewModelScope.launch {
-            val currentItem = uiState.value.itemDetails.toItem()
-            if (currentItem.quantity > 0) {
-                itemsRepository.updateItem(currentItem.copy(quantity = currentItem.quantity - 1))
-            }
-        }
-    }
 
     /**
      * Deletes the item from the [ItemsRepository]'s data source.
      */
     suspend fun deleteItem() {
-        itemsRepository.deleteItem(uiState.value.itemDetails.toItem())
+        acronymsRepository.deleteItem(uiState.value.acronymDetails.toItem())
     }
 
     companion object {
@@ -77,9 +64,8 @@ class ItemDetailsViewModel(
 }
 
 /**
- * UI state for ItemDetailsScreen
+ * UI state for AcronymDetailsScreen
  */
-data class ItemDetailsUiState(
-    val outOfStock: Boolean = true,
-    val itemDetails: ItemDetails = ItemDetails()
+data class AcronymDetailsUiState(
+    val acronymDetails: AcronymDetails = AcronymDetails()
 )
