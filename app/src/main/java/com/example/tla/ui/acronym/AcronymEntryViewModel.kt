@@ -48,7 +48,7 @@ class AcronymEntryViewModel(private val acronymRepository: AcronymRepository) : 
      */
     suspend fun saveItem() {
         if (validateInput()) {
-            acronymRepository.insertItem(acronymUiState.acronymDetails.update())
+            acronymRepository.insertItem(acronymUiState.acronymDetails.save())
         }
     }
 
@@ -84,6 +84,14 @@ fun AcronymDetails.toItem(): Acronym = Acronym(
     comment = comment,
     dataCreated = dataCreated,
     lastEdited = lastEdited
+)
+
+fun AcronymDetails.save(): Acronym = Acronym(
+    id = id,
+    acronym = ack,
+    comment = comment,
+    dataCreated = System.currentTimeMillis(),
+    lastEdited = System.currentTimeMillis()
 )
 
 fun AcronymDetails.update(): Acronym = Acronym(
