@@ -24,11 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.tla.R
 import com.example.tla.AcronymTopAppBar
+import com.example.tla.R
 import com.example.tla.ui.AppViewModelProvider
 import com.example.tla.ui.navigation.NavigationDestination
-import com.example.tla.ui.theme.InventoryTheme
+import com.example.tla.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 object AcronymEditDestination : NavigationDestination {
@@ -77,7 +77,7 @@ fun AcronymEditScreen(
 @Preview(showBackground = true)
 @Composable
 fun ItemEditScreenPreview() {
-    InventoryTheme {
+    AppTheme {
         AcronymEditScreen(navigateBack = { /*Do nothing*/ }, onNavigateUp = { /*Do nothing*/ })
     }
 }

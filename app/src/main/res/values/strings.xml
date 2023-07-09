@@ -14,7 +14,8 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">TLA, Three Letter Acronyms</string>
+    <string name="app_name_short">TLA</string>
+    <string name="app_name_long">TLA, Three Letter Acronyms</string>
     <string name="attention">Attention</string>
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>

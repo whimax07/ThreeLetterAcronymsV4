@@ -17,12 +17,12 @@
 package com.example.tla.ui.acronym
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.checkScrollableContainerConstraints
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -51,12 +51,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.tla.R
 import com.example.tla.AcronymTopAppBar
+import com.example.tla.R
 import com.example.tla.data.Acronym
 import com.example.tla.ui.AppViewModelProvider
 import com.example.tla.ui.navigation.NavigationDestination
-import com.example.tla.ui.theme.InventoryTheme
+import com.example.tla.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 object AcronymDetailsDestination : NavigationDestination {
@@ -109,7 +109,6 @@ fun AcronymDetailsScreen(
             },
             modifier = Modifier
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
         )
     }
 }
@@ -123,12 +122,14 @@ private fun AcronymDetailsBody(
     Column(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_medium))
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .imePadding(),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         AcronymDetails(
-            acronym = acronymDetailsUiState.acronymDetails.toItem(), modifier = Modifier.fillMaxWidth()
+            acronym = acronymDetailsUiState.acronymDetails.toItem(),
+            modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
@@ -155,7 +156,8 @@ fun AcronymDetails(
     acronym: Acronym, modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier, colors = CardDefaults.cardColors(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -230,7 +232,7 @@ private fun DeleteConfirmationDialog(
 @Preview(showBackground = true)
 @Composable
 fun AcronymDetailsScreenPreview() {
-    InventoryTheme {
+    AppTheme {
         AcronymDetailsBody(
             AcronymDetailsUiState(
             acronymDetails = AcronymDetails(1, "Pen", "$100", 1688905705000, 1688905715000)
@@ -241,7 +243,7 @@ fun AcronymDetailsScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 fun AcronymDetailsScreenLongCommentPreview() {
-    InventoryTheme {
+    AppTheme {
         AcronymDetailsBody(
             AcronymDetailsUiState(
                 acronymDetails = AcronymDetails(1, "Pen", "The Unix epoch (or Unix time or POSIX time or Unix timestamp) is the number of seconds that have elapsed since January 1, 1970 (midnight UTC/GMT), not counting leap seconds (in ISO 8601: 1970-01-01T00:00:00Z). Literally speaking the epoch is Unix time 0 (midnight 1/1/1970), but 'epoch' is often used as a synonym for Unix time.\n Some systems store epoch dates as a signed 32-bit integer, which might cause problems on January 19, 2038 (known as the Year 2038 problem or Y2038). The converter on this page converts timestamps in seconds (10-digit), milliseconds (13-digit) and microseconds (16-digit) to readable dates.\n\n Please note: All tools on this page are based on the date & time settings of your computer and use JavaScript to convert times. Some browsers use the current DST (Daylight Saving Time) rules for all dates in history. JavaScript does not support leap seconds.",

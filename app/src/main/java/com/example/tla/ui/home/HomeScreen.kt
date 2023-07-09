@@ -50,17 +50,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.tla.R
 import com.example.tla.AcronymTopAppBar
+import com.example.tla.R
 import com.example.tla.data.Acronym
 import com.example.tla.ui.AppViewModelProvider
 import com.example.tla.ui.navigation.NavigationDestination
-import com.example.tla.ui.theme.InventoryTheme
-import com.example.tla.ui.theme.md_theme_dark_background
+import com.example.tla.ui.theme.AppTheme
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
-    override val titleRes = R.string.app_name
+    override val titleRes = R.string.app_name_long
 }
 
 /**
@@ -220,7 +219,7 @@ private fun AcronymListItem(
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyPreview() {
-    InventoryTheme {
+    AppTheme {
         HomeBody(listOf(
             Acronym(1, "ABC", "The alphabet.", 100, 200),
             Acronym(2, "BBC", "British broadcasting company, watch some TV!!! This is one of those times I really under stand why some many people have coded text int there projects.",
@@ -233,7 +232,7 @@ fun HomeBodyPreview() {
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyEmptyListPreview() {
-    InventoryTheme {
+    AppTheme {
         HomeBody(listOf(), onItemClick = {})
     }
 }
@@ -241,7 +240,7 @@ fun HomeBodyEmptyListPreview() {
 @Preview(showBackground = true)
 @Composable
 fun AcronymPreview() {
-    InventoryTheme {
+    AppTheme {
         AcronymListItem(
             Acronym(1, "ABC", "The alphabet.", 100, 200),
         )

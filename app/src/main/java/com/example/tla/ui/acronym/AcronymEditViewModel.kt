@@ -57,7 +57,7 @@ class AcronymEditViewModel(
      */
     suspend fun updateItem() {
         if (validateInput(acronymUiState.acronymDetails)) {
-            acronymRepository.updateItem(acronymUiState.acronymDetails.toItem())
+            acronymRepository.updateItem(acronymUiState.acronymDetails.update())
         }
     }
 
