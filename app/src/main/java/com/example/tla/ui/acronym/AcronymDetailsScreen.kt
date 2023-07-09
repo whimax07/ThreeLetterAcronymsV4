@@ -17,6 +17,7 @@
 package com.example.tla.ui.acronym
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.checkScrollableContainerConstraints
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -120,8 +121,10 @@ private fun AcronymDetailsBody(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         AcronymDetails(
@@ -170,19 +173,26 @@ fun AcronymDetails(
                     .padding_medium))
             )
             ItemDetailsRow(
-                labelResID = R.string.comment,
-                itemDetail = acronym.comment,
+                labelResID = R.string.time_created,
+                itemDetail = acronym.createdAsTimeString() + ", " + acronym.createdAsDateString(),
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen
                     .padding_medium))
             )
             ItemDetailsRow(
-                labelResID = R.string.time_created,
-                itemDetail = acronym.toDateString(),
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen
-                    .padding_medium))
+                labelResID = R.string.last_edited,
+                itemDetail = acronym.lastEditedAsTimeString() + ", " + acronym.lastEditedAsDateString(),
+                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
             )
         }
 
+    }
+    Card {
+        Column(
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        ) {
+            Text(stringResource(id = R.string.comment))
+            Text(text = acronym.comment, fontWeight = FontWeight.Bold)
+        }
     }
 }
 
@@ -223,7 +233,19 @@ fun AcronymDetailsScreenPreview() {
     InventoryTheme {
         AcronymDetailsBody(
             AcronymDetailsUiState(
-            acronymDetails = AcronymDetails(1, "Pen", "$100", 1000, 2000)
+            acronymDetails = AcronymDetails(1, "Pen", "$100", 1688905705000, 1688905715000)
         ), onDelete = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AcronymDetailsScreenLongCommentPreview() {
+    InventoryTheme {
+        AcronymDetailsBody(
+            AcronymDetailsUiState(
+                acronymDetails = AcronymDetails(1, "Pen", "The Unix epoch (or Unix time or POSIX time or Unix timestamp) is the number of seconds that have elapsed since January 1, 1970 (midnight UTC/GMT), not counting leap seconds (in ISO 8601: 1970-01-01T00:00:00Z). Literally speaking the epoch is Unix time 0 (midnight 1/1/1970), but 'epoch' is often used as a synonym for Unix time.\n Some systems store epoch dates as a signed 32-bit integer, which might cause problems on January 19, 2038 (known as the Year 2038 problem or Y2038). The converter on this page converts timestamps in seconds (10-digit), milliseconds (13-digit) and microseconds (16-digit) to readable dates.\n\n Please note: All tools on this page are based on the date & time settings of your computer and use JavaScript to convert times. Some browsers use the current DST (Daylight Saving Time) rules for all dates in history. JavaScript does not support leap seconds.",
+                    1688905705000, 1688905715000)
+            ), onDelete = {})
     }
 }

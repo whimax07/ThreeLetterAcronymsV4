@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Inventory</string>
+    <string name="app_name">TLA, Three Letter Acronyms</string>
     <string name="attention">Attention</string>
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>
@@ -36,12 +36,13 @@
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
     <string name="acronym_detail_title">Acronym App</string>
-    <string name="acronym_name_req">Acrontm</string>
+    <string name="acronym_name_req">Acronym*</string>
     <string name="acronym_entry_title">Acronym</string>
     <string name="time_created">Creation Time</string>
+    <string name="last_edited">Last Edited</string>
     <string name="comment">Comment</string>
     <string name="acronym">Acronym</string>
-    <string name="acronym_comment_req">Acronym Comment</string>
+    <string name="acronym_comment_req">Comment</string>
     <string name="date_format_home">HH:mm:ss\ndd-MM-yyyy</string>
     <string name="acronym_count">Acronym Count</string>
 </resources>

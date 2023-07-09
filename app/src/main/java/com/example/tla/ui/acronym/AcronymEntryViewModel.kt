@@ -48,7 +48,7 @@ class AcronymEntryViewModel(private val acronymRepository: AcronymRepository) : 
      */
     suspend fun saveItem() {
         if (validateInput()) {
-            acronymRepository.insertItem(acronymUiState.acronymDetails.toItem())
+            acronymRepository.insertItem(acronymUiState.acronymDetails.update())
         }
     }
 
@@ -86,10 +86,13 @@ fun AcronymDetails.toItem(): Acronym = Acronym(
     lastEdited = lastEdited
 )
 
-// TODO(Max): Add this.
-fun Acronym.toDateString(): String {
-    return "TODO: Add time str"
-}
+fun AcronymDetails.update(): Acronym = Acronym(
+    id = id,
+    acronym = ack,
+    comment = comment,
+    dataCreated = dataCreated,
+    lastEdited = System.currentTimeMillis()
+)
 
 
 /**

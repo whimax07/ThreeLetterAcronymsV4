@@ -139,7 +139,6 @@ fun ItemInputForm(
         OutlinedTextField(
             value = acronymDetails.comment,
             onValueChange = { onValueChange(acronymDetails.copy(comment = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             label = { Text(stringResource(R.string.acronym_comment_req)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer

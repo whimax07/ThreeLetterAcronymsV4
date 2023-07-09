@@ -27,4 +27,12 @@ data class Acronym(
         return SimpleDateFormat("HH:mm:ss").format(lastEdited)
     }
 
+    fun createdAsDateString(): String {
+        return SimpleDateFormat("dd-MM-yyyy").format(Date(dataCreated))
+    }
+
+    fun createdAsTimeString(): String {
+        return SimpleDateFormat("HH:mm:ss").format(dataCreated)
+    }
+
 }
