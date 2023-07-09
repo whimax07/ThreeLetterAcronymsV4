@@ -43,4 +43,5 @@
     <string name="acronym">Acronym</string>
     <string name="acronym_comment_req">Acronym Comment</string>
     <string name="date_format_home">HH:mm:ss\ndd-MM-yyyy</string>
+    <string name="acronym_count">Acronym Count</string>
 </resources>

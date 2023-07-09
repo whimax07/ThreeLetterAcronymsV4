@@ -56,7 +56,7 @@ import com.example.tla.data.Acronym
 import com.example.tla.ui.AppViewModelProvider
 import com.example.tla.ui.navigation.NavigationDestination
 import com.example.tla.ui.theme.InventoryTheme
-import java.sql.Date
+import com.example.tla.ui.theme.md_theme_dark_background
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -124,7 +124,7 @@ private fun HomeBody(
                 style = MaterialTheme.typography.titleLarge
             )
         } else {
-            InventoryList(
+            AcronymList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
@@ -134,12 +134,38 @@ private fun HomeBody(
 }
 
 @Composable
-private fun InventoryList(
+private fun AcronymList(
     itemList: List<Acronym>, onItemClick: (Acronym) -> Unit, modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
+        item {
+            Card(
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                ),
+                shape = MaterialTheme.shapes.extraSmall
+            ) {
+                Column(
+                    modifier = modifier.padding(8.dp, 8.dp).fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = itemList.size.toString(),
+                        style = MaterialTheme.typography.headlineLarge,
+                    )
+                    Text(
+                        stringResource(id = R.string.acronym_count),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+            }
+        }
         items(items = itemList, key = { it.id }) { item ->
-            InventoryItem(acronym = item,
+            AcronymListItem(acronym = item,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(item) })
@@ -148,7 +174,7 @@ private fun InventoryList(
 }
 
 @Composable
-private fun InventoryItem(
+private fun AcronymListItem(
     acronym: Acronym, modifier: Modifier = Modifier
 ) {
     Card(
@@ -181,7 +207,6 @@ private fun InventoryItem(
                     )
                 }
             }
-            Spacer(Modifier.weight(1f))
             Text(
                 text = acronym.comment,
                 style = MaterialTheme.typography.titleMedium,
@@ -215,9 +240,9 @@ fun HomeBodyEmptyListPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun InventoryItemPreview() {
+fun AcronymPreview() {
     InventoryTheme {
-        InventoryItem(
+        AcronymListItem(
             Acronym(1, "ABC", "The alphabet.", 100, 200),
         )
     }
