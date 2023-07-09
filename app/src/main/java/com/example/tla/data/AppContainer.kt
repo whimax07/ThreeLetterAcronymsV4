@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+
+package com.example.tla.data
+
+import android.content.Context
+
+/**
+ * App container for Dependency injection.
+ */
+interface AppContainer {
+    val acronymRepository: AcronymRepository
+}
+
+/**
+ * [AppContainer] implementation that provides instance of [OfflineItemsRepository]
+ */
+class AppDataContainer(private val context: Context) : AppContainer {
+    /**
+     * Implementation for [ItemsRepository]
+     */
+    override val acronymRepository: AcronymRepository by lazy {
+        OfflineAcronymRepository(AcronymDatabase.getDatabase(context).acronymDao())
     }
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "tla"
-include ':app'
