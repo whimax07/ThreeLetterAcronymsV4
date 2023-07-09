@@ -46,6 +46,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,9 +54,9 @@ import com.example.tla.R
 import com.example.tla.AcronymTopAppBar
 import com.example.tla.data.Acronym
 import com.example.tla.ui.AppViewModelProvider
-import com.example.threeletteracroymsv4.ui.home.HomeViewModel
 import com.example.tla.ui.navigation.NavigationDestination
 import com.example.tla.ui.theme.InventoryTheme
+import java.sql.Date
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -153,26 +154,39 @@ private fun InventoryItem(
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+        Column (
+            modifier.padding(8.dp, 0.dp),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+
             ) {
                 Text(
                     text = acronym.acronym,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
-                Text(
-                    text = acronym.comment,
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Column(
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Text(
+                        text = acronym.lastEditedAsTimeString(),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        text = acronym.lastEditedAsDateString(),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
             }
+            Spacer(Modifier.weight(1f))
             Text(
-                text = stringResource(R.string.acronym, acronym.dataCreated),
-                style = MaterialTheme.typography.titleMedium
+                text = acronym.comment,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -184,7 +198,8 @@ fun HomeBodyPreview() {
     InventoryTheme {
         HomeBody(listOf(
             Acronym(1, "ABC", "The alphabet.", 100, 200),
-            Acronym(2, "BBC", "British broadcasting company, watch some TV!!!", 500, 600),
+            Acronym(2, "BBC", "British broadcasting company, watch some TV!!! This is one of those times I really under stand why some many people have coded text int there projects.",
+                500, 600),
             Acronym(3, "JCB", "Diggers", 300, 400)
         ), onItemClick = {})
     }

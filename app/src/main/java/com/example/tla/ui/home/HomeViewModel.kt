@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.threeletteracroymsv4.ui.home
+package com.example.tla.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

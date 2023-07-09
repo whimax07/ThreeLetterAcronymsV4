@@ -22,7 +22,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.threeletteracroymsv4.ui.home.HomeViewModel
+import com.example.tla.ui.home.HomeViewModel
 import com.example.tla.AcronymApplication
 import com.example.tla.ui.acronym.AcronymDetailsViewModel
 import com.example.tla.ui.acronym.AcronymEditViewModel
